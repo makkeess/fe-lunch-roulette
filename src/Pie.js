@@ -9,16 +9,17 @@ const Pie = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     console.log(restaurants);
-    axios.get('https://run.mocky.io/v3/f11eea3e-d1da-4bdd-8be6-2f1ad3c517d4').then(resp => {
+    axios.get('https://run.mocky.io/v3/1d73500f-8ebf-4edb-816c-f1da0919d6c0').then(resp => {
       setRestaurants(resp.data);
       console.log(restaurants);
       setIsLoading(false);
     })
   });
   return <div>
-    {isLoading === true ? <div>laddar</div> : restaurants.map(restaurant => {
-     return <Slice data = {restaurant} />
-    })}
+     {console.log(restaurants)}
+    {isLoading === true ? <div>laddar</div> : restaurants.map(restaurant => 
+     <Slice data = {restaurant} />
+    )}
   </div>;
 };
 

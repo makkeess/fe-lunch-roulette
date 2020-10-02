@@ -3,7 +3,7 @@ import React from 'react';
 const Slice = (props) => {
     return (
         <div>
-            {props.restaurant.name}
+            {props.data.name}
         </div>
     );
 };
