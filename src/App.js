@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import Button from 'react-bootstrap/Button';
+
 function App() {
   return (
     <div className="App">
@@ -11,6 +13,7 @@ function App() {
           Hejsan gänget!!!!
           Lets build this bad boy!
         </p>
+        <Button variant="primary">Lunch</Button>
         <a
           className="App-link"
           href="https://reactjs.org"
