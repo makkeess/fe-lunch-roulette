@@ -8,7 +8,11 @@ import Pie from './Pie'
 
 function App() {
   return (
+    <div className = "pieContainer">
       <Pie/>
+    </div>    
+
+      
   );
 }
 

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Slice = (props) => {
     return (
-        <div>
+        <div className = "slice">
             {props.data.name}
         </div>
     );
