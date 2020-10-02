@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import Slice from './Slice'
-
-
+import Slice from "./Slice";
+import { useEffect, useState } from "react";
 
 const Pie = () => {
-    return (
-        <div>
-            <Slice/>
-        </div>
-    );
+  const [restaurants, setRestaurants] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setIsLoading(false);
+  });
+  return <div>{isLoading === true ? <div>laddar</div> : <Slice />}</div>;
 };
 
 export default Pie;
