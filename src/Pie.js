@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import axios from "axios";
 import { PieChart } from "react-minimal-pie-chart";
 
@@ -20,7 +20,15 @@ const mappingFunction = (restaurants) =>
 const Pie = () => {
   const [pieData, setPieData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [current, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(0);
+
+  const calculateNewCurrent = (current, pieData) => {
+    console.log(current + " | " + pieData.length)
+    if (current < pieData.length - 1) {
+      return current + 1;
+    }
+    return 0;
+  }
 
   useEffect(() => {
     axios
@@ -29,8 +37,8 @@ const Pie = () => {
         setPieData(mappingFunction(resp.data));
         setIsLoading(false);
       });
-      this.interval = setInterval(() => setCurrent(Math.random() * pieData.length), 500);
-      return () => clearInterval(this.interval);
+    const interval = setInterval(() => setCurrent(calculateNewCurrent(current, pieData)), 500);
+      return () => clearInterval(interval);
   }, []);
 
   return (
