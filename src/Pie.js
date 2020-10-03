@@ -3,14 +3,15 @@ import React from "react";
 import Slice from "./Slice";
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import pieChart from 'react-minimal-pie-chart';
 
 const Pie = () => {
-  const [restaurants, setRestaurants] = useState([]);
+  const [pieData, setPieData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
   const fetchData = () => {
-    axios.get('https://run.mocky.io/v3/1d73500f-8ebf-4edb-816c-f1da0919d6c0').then(resp => {
-      setRestaurants(resp.data);
+    axios.get('https://run.mocky.io/v3/a98eda33-75e2-492f-8818-514cd2698afe').then(resp => {
+      setPieData(resp.data);
       setIsLoading(false);
     })
   }
@@ -18,6 +19,11 @@ const Pie = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const mapingFunction = restaurants.map(restaurant => {
+    return {title: restaurant.name, value: 1, color: 'blue' };
+  })
+  
 
   return <div className = "pie">
     {isLoading === true ? <div>laddar</div> : restaurants.map((restaurant) =>
