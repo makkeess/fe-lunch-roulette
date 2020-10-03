@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { PieChart } from "react-minimal-pie-chart";
 
@@ -22,13 +22,19 @@ const Pie = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [current, setCurrent] = useState(0);
 
-  const calculateNewCurrent = (current, pieData) => {
-    console.log(current + " | " + pieData.length)
-    if (current < pieData.length - 1) {
-      return current + 1;
-    }
-    return 0;
-  }
+  useEffect(() => {
+    const calculateNewCurrent = () => {
+      if (current < pieData.length - 1) {
+        setCurrent(current + 1);
+      } else {
+        setCurrent(0);
+      }
+    };
+
+    var interval = setTimeout(() => calculateNewCurrent(), 500);
+
+    return () => clearInterval(interval);//clearTimeout
+  }, [pieData, current]);
 
   useEffect(() => {
     axios
@@ -37,8 +43,6 @@ const Pie = () => {
         setPieData(mappingFunction(resp.data));
         setIsLoading(false);
       });
-    const interval = setInterval(() => setCurrent(calculateNewCurrent(current, pieData)), 500);
-      return () => clearInterval(interval);
   }, []);
 
   return (
