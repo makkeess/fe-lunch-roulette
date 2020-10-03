@@ -5,8 +5,8 @@ import axios from "axios";
 import { PieChart } from "react-minimal-pie-chart";
 
 const defaultLabelStyle = {
-  fontSize: "5px",
-  fontFamily: "sans-serif",
+  fontSize: "4px",
+  fontFamily: "sans-serif"
 };
 
 const randomColorHex = () =>
@@ -21,6 +21,7 @@ const Pie = () => {
   const [pieData, setPieData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [current, setCurrent] = useState(0);
+  const [transitionTime, setTransitionTime] = useState(500);
 
   useEffect(() => {
     const calculateNewCurrent = () => {
@@ -31,14 +32,14 @@ const Pie = () => {
       }
     };
 
-    var interval = setTimeout(() => calculateNewCurrent(), 500);
+    var interval = setTimeout(() => calculateNewCurrent(), transitionTime);
 
     return () => clearInterval(interval);//clearTimeout
   }, [pieData, current]);
 
   useEffect(() => {
     axios
-      .get("https://run.mocky.io/v3/a98eda33-75e2-492f-8818-514cd2698afe")
+      .get("https://run.mocky.io/v3/9df29200-8880-4694-81c4-6570a29bd5bf")
       .then((resp) => {
         setPieData(mappingFunction(resp.data));
         setIsLoading(false);
@@ -54,10 +55,13 @@ const Pie = () => {
           data={pieData}
           radius={PieChart.defaultProps.radius - 7}
           segmentsShift={(index) => (index === current ? 7 : 0.5)}
-          label={({ dataEntry }) => dataEntry.title}
+          label={({ dataEntry}) => dataEntry.title}
           labelStyle={{
             ...defaultLabelStyle,
           }}
+          startAngle = {-90}
+          labelPosition = {120}
+          segmentsStyle = {{transition : (transitionTime /2) + "ms" }}
         />
       )}
     </div>
