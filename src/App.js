@@ -5,20 +5,12 @@ import Pie from './Pie'
 
 import Button from 'react-bootstrap/Button';
 
-
-//const startRotation = () => {
-  // POST DATA
-//};
-
 function App() {
   return (
     <div className = "pieContainer">
       <Pie/>
-      <Button>Slumpa dagens lunch</Button>
     </div> 
-     
-
-      
+           
   );
 }
 

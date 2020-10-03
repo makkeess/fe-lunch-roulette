@@ -22,6 +22,7 @@ const Pie = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [transitionTime, setTransitionTime] = useState(500);
+  const [timeout, setATimeout] = useState(transitionTime);
 
   useEffect(() => {
     const calculateNewCurrent = () => {
@@ -32,9 +33,10 @@ const Pie = () => {
       }
     };
 
-    var interval = setTimeout(() => calculateNewCurrent(), transitionTime);
+    var timeout = setTimeout(() => calculateNewCurrent(), transitionTime);
+    setATimeout(timeout);
 
-    return () => clearInterval(interval);//clearTimeout
+    return () => clearTimeout(timeout);
   }, [pieData, current]);
 
   useEffect(() => {
@@ -46,11 +48,16 @@ const Pie = () => {
       });
   }, []);
 
+  const stopThePie = () => {
+    clearTimeout(timeout);
+  }
+
   return (
     <div className="">
       {isLoading === true ? (
         <div>laddar</div>
       ) : (
+        <div>
         <PieChart
           data={pieData}
           radius={PieChart.defaultProps.radius - 7}
@@ -60,9 +67,12 @@ const Pie = () => {
             ...defaultLabelStyle,
           }}
           startAngle = {-90}
-          labelPosition = {120}
+          labelPosition = {60}
           segmentsStyle = {{transition : (transitionTime /2) + "ms" }}
+          style = {{width:"80wh"}}
         />
+        <Button onClick={stopThePie()}>Slumpa dagens lunch</Button>
+        </div>
       )}
     </div>
   );
