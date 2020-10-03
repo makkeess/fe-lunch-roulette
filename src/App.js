@@ -1,16 +1,14 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-//import logo from './logo.svg';
 import './App.css';
 
 import Pie from './Pie'
 
-//import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button';
 
 
-const startRotation = () => {
+//const startRotation = () => {
   // POST DATA
-};
+//};
 
 function App() {
   return (
