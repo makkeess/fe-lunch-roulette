@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { PieChart } from "react-minimal-pie-chart";
 
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 
 const defaultLabelStyle = {
   fontSize: "4px",
-  fontFamily: "sans-serif"
+  fontFamily: "sans-serif",
 };
 
 const randomColorHex = () =>
@@ -25,8 +25,15 @@ const Pie = () => {
   const [current, setCurrent] = useState(0);
   const [transitionTime, setTransitionTime] = useState(500);
   const [aTimeout, setATimeout] = useState(500);
+  const [running, setRunning] = useState(false);
 
   useEffect(() => {
+    console.log(running);
+    if (!running) {
+      console.log(running);
+      return;
+    }
+
     const calculateNewCurrent = () => {
       if (current < pieData.length - 1) {
         setCurrent(current + 1);
@@ -37,8 +44,7 @@ const Pie = () => {
 
     setTimeout(() => calculateNewCurrent(), aTimeout);
     setATimeout(aTimeout + 15);
-
-  }, [pieData, current]);
+  }, [pieData, current, running]);
 
   useEffect(() => {
     axios
@@ -46,12 +52,14 @@ const Pie = () => {
       .then((resp) => {
         setPieData(mappingFunction(resp.data));
         setIsLoading(false);
+        setRunning(true);
       });
   }, []);
 
   const stopThePie = () => {
     console.log("Stopping...");
-  }
+    setRunning(false);
+  };
 
   return (
     <div className="">
@@ -59,20 +67,20 @@ const Pie = () => {
         <div>laddar</div>
       ) : (
         <div>
-        <PieChart
-          data={pieData}
-          radius={PieChart.defaultProps.radius - 7}
-          segmentsShift={(index) => (index === current ? 7 : 0.5)}
-          label={({ dataEntry}) => dataEntry.title}
-          labelStyle={{
-            ...defaultLabelStyle,
-          }}
-          startAngle = {-90}
-          labelPosition = {60}
-          segmentsStyle = {{transition : (transitionTime /2) + "ms" }}
-          style = {{width:"80wh"}}
-        />
-        <Button onClick={stopThePie}>Slumpa dagens lunch</Button>
+          <PieChart
+            data={pieData}
+            radius={PieChart.defaultProps.radius - 7}
+            segmentsShift={(index) => (index === current ? 7 : 0.5)}
+            label={({ dataEntry }) => dataEntry.title}
+            labelStyle={{
+              ...defaultLabelStyle,
+            }}
+            startAngle={-90}
+            labelPosition={60}
+            segmentsStyle={{ transition: transitionTime / 2 + "ms" }}
+            style={{ width: "80wh" }}
+          />
+          <Button onClick={stopThePie}>Slumpa dagens lunch</Button>
         </div>
       )}
     </div>
