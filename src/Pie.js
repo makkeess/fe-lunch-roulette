@@ -63,16 +63,12 @@ const Pie = () => {
   };
 
   useEffect(() => {
-    console.log(running);
     if (!running) {
-      console.log(running);
       return;
     }
     if (slowingDown) {
       setCountDown(countDown - 1);
-      console.log(countDown);
       if (countDown % 2 === 0) {
-        console.log("counting down");
         setTransitionTime(transitionTime + 2);
         setATimeout(aTimeout + 2);
       }
@@ -97,23 +93,21 @@ const Pie = () => {
     navigator.geolocation.getCurrentPosition(function (position) {
       lat = position.coords.latitude;
       long = position.coords.longitude;
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
 
       axios
-      .get("https://1ng9r2tnq8.execute-api.eu-north-1.amazonaws.com/prod/restaurants", {params: {
+      .get("http://localhost:8080/restaurants", {params: {
         lat, long
       }})
       .then((resp) => {
-        setPieData(mappingFunction(resp.data.results));
+        setPieData(mappingFunction(resp.data.body.results));
         setIsLoading(false);
         setRunning(true);
       });
     }, function(error) {
       axios
-      .get("https://1ng9r2tnq8.execute-api.eu-north-1.amazonaws.com/prod/restaurants")
+      .get("http://localhost:8080/restaurants")
       .then((resp) => {
-        setPieData(mappingFunction(resp.data.results));
+        setPieData(mappingFunction(resp.data.body.results));
         setIsLoading(false);
         setRunning(true);
       });
@@ -122,7 +116,6 @@ const Pie = () => {
   }, []);
 
   const stopThePie = () => {
-    console.log("Stopping...");
     setSlowingDown(true);
     setATimeout(20);
     setTransitionTime(20);
@@ -134,7 +127,7 @@ const Pie = () => {
         <div>laddar</div>
       ) : (
         <div>
-          <Jumbotron fluid>
+          <Jumbotron fluid style = {{padding: 20, borderRadius: 20}}>
             <p>Namn: {pieData[current].title}</p>
             <p>Betyg: {pieData[current].rating}</p>
             <p>
@@ -148,12 +141,7 @@ const Pie = () => {
             data={pieData}
             radius={PieChart.defaultProps.radius - 7}
             segmentsShift={(index) => (index === current ? 7 : 0.5)}
-            label={({ dataEntry }) => dataEntry.title}
-            labelStyle={{
-              ...defaultLabelStyle,
-            }}
             startAngle={-90}
-            labelPosition={60}
             segmentsStyle={{ transition: transitionTime / 2 + "ms" }}
             style={{ width: "80wh" }}
           />
