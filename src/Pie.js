@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { PieChart } from "react-minimal-pie-chart";
 
+import Button from 'react-bootstrap/Button';
+
 const defaultLabelStyle = {
   fontSize: "4px",
   fontFamily: "sans-serif"
@@ -22,7 +24,7 @@ const Pie = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [transitionTime, setTransitionTime] = useState(500);
-  const [timeout, setATimeout] = useState(transitionTime);
+  const [aTimeout, setATimeout] = useState(500);
 
   useEffect(() => {
     const calculateNewCurrent = () => {
@@ -33,10 +35,9 @@ const Pie = () => {
       }
     };
 
-    var timeout = setTimeout(() => calculateNewCurrent(), transitionTime);
-    setATimeout(timeout);
+    setTimeout(() => calculateNewCurrent(), aTimeout);
+    setATimeout(aTimeout + 15);
 
-    return () => clearTimeout(timeout);
   }, [pieData, current]);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const Pie = () => {
   }, []);
 
   const stopThePie = () => {
-    clearTimeout(timeout);
+    clearTimeout(aTimeout);
   }
 
   return (
