@@ -50,7 +50,7 @@ const Pie = () => {
   }, []);
 
   const stopThePie = () => {
-    clearTimeout(aTimeout);
+    console.log("Stopping...");
   }
 
   return (
@@ -72,7 +72,7 @@ const Pie = () => {
           segmentsStyle = {{transition : (transitionTime /2) + "ms" }}
           style = {{width:"80wh"}}
         />
-        <Button onClick={stopThePie()}>Slumpa dagens lunch</Button>
+        <Button onClick={stopThePie}>Slumpa dagens lunch</Button>
         </div>
       )}
     </div>
