@@ -26,12 +26,33 @@ const Pie = () => {
   const [transitionTime, setTransitionTime] = useState(500);
   const [aTimeout, setATimeout] = useState(500);
   const [running, setRunning] = useState(false);
+  const [countDown, setCountDown] = useState(200);
+  const [slowingDown, setSlowingDown] = useState(false);
+
+  const resetPie = () => {
+      setRunning(false);
+      setTransitionTime(500);
+      setTimeout(500);
+      setCountDown(200);
+      setSlowingDown(200);
+  };
 
   useEffect(() => {
     console.log(running);
     if (!running) {
       console.log(running);
       return;
+    }
+    if(slowingDown){
+      setCountDown(countDown-1);
+      if(countDown % 2 === 0){
+        console.log("counting down");
+        setTransitionTime(transitionTime + 100);
+        setATimeout(aTimeout + 100);
+      }
+      if(countDown === 0){
+        setRunning(false);
+      }
     }
 
     const calculateNewCurrent = () => {
@@ -43,7 +64,8 @@ const Pie = () => {
     };
 
     setTimeout(() => calculateNewCurrent(), aTimeout);
-    setATimeout(aTimeout + 15);
+    setATimeout(aTimeout);
+    setTransitionTime(aTimeout);
   }, [pieData, current, running]);
 
   useEffect(() => {
@@ -52,13 +74,15 @@ const Pie = () => {
       .then((resp) => {
         setPieData(mappingFunction(resp.data));
         setIsLoading(false);
-        setRunning(true);
+        setRunning(true); 
       });
   }, []);
 
   const stopThePie = () => {
     console.log("Stopping...");
-    setRunning(false);
+    setSlowingDown(true);
+    setATimeout(20);
+    setTransitionTime(20);
   };
 
   return (
