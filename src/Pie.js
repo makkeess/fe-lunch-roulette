@@ -93,13 +93,32 @@ const Pie = () => {
   }, [pieData, current, running]);
 
   useEffect(() => {
-    axios
-      .get("https://run.mocky.io/v3/9df29200-8880-4694-81c4-6570a29bd5bf")
+    var lat, long;
+    navigator.geolocation.getCurrentPosition(function (position) {
+      lat = position.coords.latitude;
+      long = position.coords.longitude;
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+
+      axios
+      .get("https://1ng9r2tnq8.execute-api.eu-north-1.amazonaws.com/prod/restaurants", {params: {
+        lat, long
+      }})
       .then((resp) => {
-        setPieData(mappingFunction(resp.data));
+        setPieData(mappingFunction(resp.data.results));
         setIsLoading(false);
         setRunning(true);
       });
+    }, function(error) {
+      axios
+      .get("https://1ng9r2tnq8.execute-api.eu-north-1.amazonaws.com/prod/restaurants")
+      .then((resp) => {
+        setPieData(mappingFunction(resp.data.results));
+        setIsLoading(false);
+        setRunning(true);
+      });
+    });
+    
   }, []);
 
   const stopThePie = () => {
