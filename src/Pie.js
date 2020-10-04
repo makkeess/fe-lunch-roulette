@@ -5,6 +5,7 @@ import axios from "axios";
 import { PieChart } from "react-minimal-pie-chart";
 
 import Button from "react-bootstrap/Button";
+import Jumbotron from 'react-bootstrap/Jumbotron'
 
 const defaultLabelStyle = {
   fontSize: "4px",
@@ -16,7 +17,13 @@ const randomColorHex = () =>
 
 const mappingFunction = (restaurants) =>
   restaurants.map((restaurant) => {
-    return { title: restaurant.name, value: 1, color: randomColorHex() };
+    return {
+      title: restaurant.name,
+      value: 1,
+      color: randomColorHex(),
+      rating: restaurant.rating,
+      vicinity: restaurant.vicinity,
+    };
   });
 
 const Pie = () => {
@@ -26,15 +33,15 @@ const Pie = () => {
   const [transitionTime, setTransitionTime] = useState(500);
   const [aTimeout, setATimeout] = useState(500);
   const [running, setRunning] = useState(false);
-  const [countDown, setCountDown] = useState(200);
+  const [countDown, setCountDown] = useState(100);
   const [slowingDown, setSlowingDown] = useState(false);
 
   const resetPie = () => {
-      setRunning(false);
-      setTransitionTime(500);
-      setTimeout(500);
-      setCountDown(200);
-      setSlowingDown(200);
+    setRunning(false);
+    setTransitionTime(500);
+    setTimeout(500);
+    setCountDown(100);
+    setSlowingDown(200);
   };
 
   useEffect(() => {
@@ -43,14 +50,15 @@ const Pie = () => {
       console.log(running);
       return;
     }
-    if(slowingDown){
-      setCountDown(countDown-1);
-      if(countDown % 2 === 0){
+    if (slowingDown) {
+      setCountDown(countDown - 1);
+      console.log(countDown);
+      if (countDown % 2 === 0) {
         console.log("counting down");
-        setTransitionTime(transitionTime + 100);
-        setATimeout(aTimeout + 100);
+        setTransitionTime(transitionTime + 2);
+        setATimeout(aTimeout + 2);
       }
-      if(countDown === 0){
+      if (countDown === 0) {
         setRunning(false);
       }
     }
@@ -64,8 +72,6 @@ const Pie = () => {
     };
 
     setTimeout(() => calculateNewCurrent(), aTimeout);
-    setATimeout(aTimeout);
-    setTransitionTime(aTimeout);
   }, [pieData, current, running]);
 
   useEffect(() => {
@@ -74,7 +80,7 @@ const Pie = () => {
       .then((resp) => {
         setPieData(mappingFunction(resp.data));
         setIsLoading(false);
-        setRunning(true); 
+        setRunning(true);
       });
   }, []);
 
@@ -91,6 +97,15 @@ const Pie = () => {
         <div>laddar</div>
       ) : (
         <div>
+          <Jumbotron fluid>
+              <p>Namn: {pieData[current].title}</p>
+              <p>Betyg: {pieData[current].rating}</p>
+              <p>
+                Adress: {pieData[current].vicinity
+                  ? pieData[current].vicinity
+                  : "Unknown address"}
+              </p>
+          </Jumbotron>
           <PieChart
             data={pieData}
             radius={PieChart.defaultProps.radius - 7}
