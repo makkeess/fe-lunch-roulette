@@ -5,15 +5,33 @@ import axios from "axios";
 import { PieChart } from "react-minimal-pie-chart";
 
 import Button from "react-bootstrap/Button";
-import Jumbotron from 'react-bootstrap/Jumbotron'
+import Jumbotron from "react-bootstrap/Jumbotron";
 
 const defaultLabelStyle = {
   fontSize: "4px",
   fontFamily: "sans-serif",
 };
 
+var colors = [
+  "#BADA55",
+  "#FB1",
+  "#1D1075",
+  "#C0FF33",
+  "#C55",
+  "#DE1E7E",
+  "#1CE",
+  "#D1E6E1",
+  "#02AC1E",
+  "#FACADE",
+  "#907A70",
+];
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
 const randomColorHex = () =>
-  "#" + Math.floor(Math.random() * 16777215).toString(16);
+  colors[getRandomInt(11)];
 
 const mappingFunction = (restaurants) =>
   restaurants.map((restaurant) => {
@@ -98,13 +116,14 @@ const Pie = () => {
       ) : (
         <div>
           <Jumbotron fluid>
-              <p>Namn: {pieData[current].title}</p>
-              <p>Betyg: {pieData[current].rating}</p>
-              <p>
-                Adress: {pieData[current].vicinity
-                  ? pieData[current].vicinity
-                  : "Unknown address"}
-              </p>
+            <p>Namn: {pieData[current].title}</p>
+            <p>Betyg: {pieData[current].rating}</p>
+            <p>
+              Adress:{" "}
+              {pieData[current].vicinity
+                ? pieData[current].vicinity
+                : "Unknown address"}
+            </p>
           </Jumbotron>
           <PieChart
             data={pieData}
